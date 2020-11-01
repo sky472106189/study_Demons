@@ -1,0 +1,21 @@
+1.反射机制中主要掌握的类型:
+    以下是SUN公司提供的反射机制中的类.
+                                            每个类都可以创建对象
+    java.lang.Class;                        Class c = 0x1234;
+    java.lang.reflect.Construct;            Construct c =0x2345;
+    java.lang.reflect.Field;                Field f = 0x4425;
+    java.lang.reflect.Method;               Method m = 0x2577;
+    java.lang.reflect.Modifier;             Modifier m = 0x7795;
+
+    class User{
+
+        private String name;
+
+        public user(){};
+
+        public void m1(){}
+    }
+
+2.反射机制的作用:
+    1.反编译: .class-->.java
+    2.通过反射机制访问Java对象的属性,方法,构造方法等.

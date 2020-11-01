@@ -1,0 +1,90 @@
+Cookie:
+a.不是内置对象，要使用必须new
+b.但是服务端在响应客户端某些请求时，会自动生成一个（服务端自动new一个cookie）
+name=JSESSIONID的cookie并返回给客户端.
+
+
+1.session：又叫会话
+a.浏览网站：开始-关闭
+b.购物：浏览、付款、退出
+c.电子邮件：浏览、写邮件、退出
+    简述：开始--->结束
+
+session机制:
+客户端第一次请求服务端时：（JESSIONID-sessionId匹配失败）服务端会产生一个session对象（用于保存该用户的信息）；
+并且每个session有一个唯一的sessionId(用户区分其他session);
+服务端又会产生一个cookie，并且该cookie的name=JSESSIONID,value=服务端sessionId的值；
+然后服务端会在响应客户端的同时，将该cookie发送给客户端，至此客户端就有了一个cookie(JSESSIONID);
+因此，客户的Cookie就可以和服务端的session一一对应（JSESSIONID---sessionId）.
+
+客户端第二/n次请求服务端时:服务端会先根据客户端cookie中的JSESSIONID，去服务端的seesion中
+匹配sessionId,如果匹配成功（cookie的JSESSIONID和session的sessionId），说明此用户不是
+第一次访问，无需登录；
+
+例子：
+客户端：                                顾客（客户端）
+服务端：存包处（用钥匙开）    ----       商场（服务端）
+
+顾客第一次存包：商场判断此人是否之前已经存过包（通过你手机是否有钥匙）；
+如果是新顾客（没钥匙），分配一个钥匙给该顾客；钥匙会和柜子自动一一对应。
+
+顾客第二次/n次存包：商场判断此人是否之前已经存过包（通过你手里是否有钥匙）；
+如果是老顾客（有钥匙），则不需要分配；该顾客手里的钥匙会和柜子自动一一对应。
+
+        顾客-客户端
+#————————————#                       #——————————#
+|         口袋-cookie    |--------------------》| 柜子-session       |
+|        #———————# |                     | #——————#     |
+|       |          钥匙| |《--------------------| |编号        |     |
+|       |（JESSIONID） | |《--------------------| |(sessionId) |     |
+|        #———————# |                     | #——————#     |
+#—————————————#                     #——————————#
+
+强调：
+a.session存储在服务端
+b.session实在同一个用户请求时共享
+c.实现机制：第一次客户请求时，产生一个sessionId并复制给cookie的JSESSIONID,
+然后发给客户端。最终通过session的sessionId--JSESSIONID一一对应。
+d.客户端在第一次请求服务端时，服务端发现此请求没有JSESSIONID，则会创造一个
+拥有name=JSESSIONID的cookie，并返回给客户端
+
+session方法
+String getId():获取sessionId
+boolean is New():判断是否是新用户（第一次访问）
+void invalidate():使session实效（退出登录、注销）
+
+void setAttribute()   //设置值
+Object getAttribute()  //得到值
+
+void setMaxInactiveInterval(秒):设置最大有效非活动时间
+int getMaxInactiveInterval():获取最大有效非活动时间
+
+cookie和session的区别：
+                        session             cookie
+保存的位置               服务端              客户端
+安全性                   较安全              较不安全
+保存的内容               Object              String
+
+2.appliation 全局对象
+方法：
+String getContextPath():虚拟路径
+String getRealPath(String name):绝对路径（虚拟路径相对的绝对路径）
+
+
+9大内置对象中的
+四种范围对象（小->大）
+pageContext：page对象          当前页面有效(页面跳转后无效)
+request:请求对象               同一次请求有效(请求转发后有效，重定向无效，因为重定向是两次请求)
+session:会话对象               同一次会话有效(无论怎么跳转，都有效；关闭/切换浏览器后无效;登录->退出 之间全部有效)
+application:全局对象           全局有效（同一个项目有效,切换浏览器仍然有效，关闭服务或者切换项目会无效）
+                                       （想使多个项目共享，重启后仍然有效：JNDI）
+以上四个对象共有的方法：
+1)Object getAttribute(String name):根据属性名获取属性值
+2)void setAttribute(String name,Object obj):设置属性值（新增，修改）
+        例：setAttribute("a","b")//如果a对象之前不存在，则新建一个a对象；
+                                   如果a对象存在，则将a的值改为b。
+                                   类似HashMap
+3)void removeAttribute(String name):根据属性名，删除对象
+
+1.以为的4个范围对象：通过setAttribute()赋值，getAttribute()取值；
+2.四大范围对象，尽量使用最小的范围.因为对象的范围越大造成的性能损耗越大。

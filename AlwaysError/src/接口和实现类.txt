@@ -1,0 +1,28 @@
+举例说明:
+    JDK中有一个接口叫做
+        Interface Closeable
+        在API文档中,它有很多很多的实现类,这个接口只有一个方法:
+            void close()
+                throws IOException
+        在API文档中,它之所以那么多实现类,是因为那些实现类都实现了它的这个接口.
+
+    JDK有一个类叫做
+        Class FileOutputStream
+        在API文档中,因为它不是接口,所以他没有实现类,只有A
+            All Implemented Interfaces:
+                Closeable ， Flushable ， AutoCloseable .
+        可以推断出来,Closeable和Flushable以及AutoCloseable都是接口
+        类FileOutputStream实现了这些接口,在API文档中显示:All Implemented Interfaces:
+
+
+总结:实现类,是针对类来实现接口的,比如:
+        interface A{
+            void dosome();
+            //B实现了A的方法,所以A是实现类
+        }
+        class B Implement A{
+            void dosome(){
+                //B实现了A,所以叫做Implemented Interfaces(实现接口)
+            }
+        }
+

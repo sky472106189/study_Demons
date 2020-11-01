@@ -1,0 +1,104 @@
+1.JDBC:Java DataBase Connectivity 可以为多种关系型数据库DBMS提供统一的访问方式，用Java来操作数据库
+2.JDBC API主动功能：
+三件事，具体是通过以下类/接口实现：
+DriveManager:管理jdbc驱动
+    Connection:连接(通过DriverManager产生)
+        Statement(PreparedStatement):增删改查(通过Connection产生)
+        CallableStatement:调用数据库中的存储过程/存储函数(通过Connection产生)
+            Result：返回的结果集(通过Statement,PrepareStatement,CallableStatement产生)
+
+    Connection产生操作数据库的对象：
+        Connection产生Statement对象:creatStatement();
+        Connection产生PreparedStatement对象:PrepareStatement();
+        Connection产生CallableStatement对象:prepareCall();
+
+    Statement操作数据库:
+        增删改:executeUpdate(sql语句);
+        查询:executeQuerry(sql语句);
+
+    CallableStatement:调用存储过程、存储函数
+        connection.prepareCall(参数：存储过程或存储函数名)
+        参数格式：
+            --存储过程（无返回值return,用Out参数替代）：
+                    {call 存储过程名(参数列表)}
+            --存储函数(有返回值return)：
+                    {? = call 存储函数名(参数列表)}
+
+    PrepareStatement与Statement的区别：
+
+    推荐使用PrepareStatement:
+        1.编码更加简便
+            String name="zs";
+            int age = 23;
+
+            stmt:
+            String sql ="insert into t_user(username,password) values ('"+name+"',"+pwd+")";
+            stmt.executeUpdate(sql);
+
+            pstmt:
+            String sql ="insert into t_user(username,password) values (?,?)";
+            pstmt.executeUpdate(sql); //预编译sql语句
+            pstmt.setString(1,name);
+            pstmt.setInt(2,age);
+
+        2.提高性能
+            Statement编译一次执行一次，PreparedStatement编译一次,执行n此.PreparedStatement效率较高一些
+
+        3.更安全(防止sql注入)
+            stmt:存在被sql注入的风险
+            ptst:避免被sql注入的风险
+
+    Result结果集：
+        ResultSet:保存查询的结果集(Select 关键字 from 表名);
+        next():初始光标在顶层，调用一次往下移一次，判断是否有数据，有/无返回true/false;
+        previous():调用一次往上移动，true/false;
+        getXxx(字段名/位置):获取具体的字段值；
+
+3.JDBC访问数据库的具体步骤：
+a.导入驱动，加载具体的启动那个类（不用的数据库，不同的jar）
+b.与数据库建立连接
+c.发送sql，执行
+d.处理结果集（查询才有此步骤）
+
+4.数据库驱动
+                    驱动jar                           具体驱动类                                           连接字符串
+Oracle              ojdbc-x.jar                       oracle.jdbc.OracleDriver                            jdbc:oracle:thin:@localhost:3306:SID
+Mysql               mysql-connector-java-x.jar        com.mysql.jdbc.Driver                               jdbc:mysql://localhost:3306/数据库实例名
+SqlServer           sqljdbc-x.jar                     com.microsoft.sqlserver.jdbc.SQLServerDriver        jdbc:microsoft:sqlserver:localhost:3306;databasename=数据库实例名
+
+5.JDBC总结(模板，八股文)：
+try{
+    a.导入驱动包，加载具体驱动类Class.forName("具体驱动类");
+    b.与数据库建立连接connection = DriverManager.Connection(...);
+    c.通过connection,获取数据库操作对象(Statement/PreparedStatement/callableStatement)
+    stmt=connectiion.createStatement();
+    d.(查询)处理结果集rs = stmt.executeQuery(sql);
+    while(rs.next()){
+        rs.getXxx(..);
+     }
+}
+catch(Exception e ){
+...
+}finally{
+  ...close();//打开顺序与关闭顺序相反，栈结构.
+}
+
+6.处理CLOB(text)/BLOB类型
+CLOB:大文本数据（纯文本文件）
+BLOB:二进制（各种都能存，电影，音乐...）
+
+    处理稍大型数据:
+        a.存储文件路径
+            通过JDBC存储文件路径,然后根据IO操作处理
+            例如:JDBC将 E:\Program file\Jdk 文件以字符串形式"E:\Program file\Jdk"存到数据库中
+                 获取方式:1.获取该路径"E:\Program file\Jdk". 2.通过IO
+
+CLOB:
+    存：
+    1.先通过pstm的?占位符代替小说内容
+    2.再通过pstm.setCharacterStream(?,reader);将?替换为大文本数据流
+    取:
+    1.通过Reader reader = rs.getCharacetrStream("nove"):将CLOB类型的数据保存到Reader对象中
+    2.将Reader通过Writer输出即可
+
+BLOC:二进制
