@@ -23,6 +23,8 @@ public class FileInputStreamTest04 {
 
         //升级循环
         int temp;
+        //temp = fis.read(bytes), 若能读到数据,则temp=读取到的有效长度
+        //                        若读不到数据,则temp=-1
         while((temp=fis.read(bytes)) != -1){
             System.out.println(new String(bytes,0,temp));
         }
