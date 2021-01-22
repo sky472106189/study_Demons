@@ -10,14 +10,14 @@ public class Error1 {
                          //相当于整个程序只有user存在,没有Address存在
 
         //以下为解决方法
-        u.address = new Address();
-        u.address.display(); //编译+运行通过
+//        u.address = new Address();
+//        u.address.display(); //编译+运行通过
     }
 }
 class Address{
-    String city;
-    String street;
-    String zipcode;
+    String city = "杭州";
+    String street = "街道";
+    String zipcode = "31000";
 
     public void display(){
         System.out.println(city+street+zipcode);
@@ -26,7 +26,14 @@ class Address{
 
 class User {
 
+//    static{
+//        address = new Address();
+//    }
+
     String id;
     String name;
     Address address;
+//    static Address address;
+
+
 }
