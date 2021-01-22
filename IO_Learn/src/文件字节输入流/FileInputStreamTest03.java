@@ -28,7 +28,7 @@ public class FileInputStreamTest03 {
         //String(byte[] bytes)
         //通过使用平台的默认字符集解码指定的字节数组来构造新的 String 。
 
-//重点关注这个示范:
+/*******************重点关注这个示范:*******************************/
         int i2 = fis.read(bytes); //2
         //System.out.println(new String(bytes));//efcd
         // 输出不符合逻辑.因为按byte[4]是要读取4个,但是只读取了2个
