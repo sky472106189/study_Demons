@@ -4,7 +4,7 @@ import java.io.IOException;
 
 /*
 关于try..catch中的finally字句:
-    在finally字句中的代码,是最后才执行的,而且是一定执行的.及时try语句出现了异常
+    在finally字句中的代码,是最后才执行的,而且是一定执行的.即使try语句出现了异常
 */
 public class ExceptionTest06 {
     public static void main(String[] args) {

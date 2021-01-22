@@ -12,13 +12,13 @@ public class Exam01 {
         t1.setName("t1");
         t2.setName("t2");
 
-        t1.start();
         try {
+            t1.start();
             Thread.sleep(1000);
+            t2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        t2.start();
     }
 }
 
@@ -41,7 +41,7 @@ class MyThread extends Thread{
 }
 
 class Myclass{
-    public synchronized void doSome(){
+    public  void doSome(){
         System.out.println("doSome begin");
         try {
             Thread.sleep(1000*10);
@@ -51,7 +51,7 @@ class Myclass{
         System.out.println("doSome over");
     }
 
-    public synchronized void  doOther(){
+    public  void  doOther(){
         System.out.println("doOther begin");
 
         System.out.println("doOther over");

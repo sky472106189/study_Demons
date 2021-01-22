@@ -14,13 +14,13 @@ public class Exam02 {
         t1.setName("t1");
         t2.setName("t2");
 
-        t1.start();
         try {
+            t1.start();
             Thread.sleep(1000);
+            t2.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        t2.start();
     }
 }
 class MyThread extends Thread{

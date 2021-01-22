@@ -45,10 +45,10 @@ class Default {
 
 //编译报错
 //  因为在使用局部变量之前没有赋值
-    public void test2() {
+/*    public void test2() {
         int a;
         System.out.println("a = " + a);
-        }
+        }*/
 
 //编译通过
     //只有在使用之前赋值就可以了
@@ -68,11 +68,11 @@ class Default {
 //例如:
 class Life{
     //test4方法执行完,变量a就没有了
-    public void test4(){
+/*    public void test4(){
         int a;
         System.out.println(b);
         //这里是访问不到变量b的,编译报错
-    }
+    }*/
 
     //if代码块执行完,变量b就没有了
     public void test5(int b){
